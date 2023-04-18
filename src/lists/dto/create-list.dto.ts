@@ -1,12 +1,12 @@
-import {IsDefined, IsNotEmpty, IsString, IsUUID} from "class-validator";
+import { IsDefined, IsNotEmpty, IsString, IsUUID } from 'class-validator';
 
 export class CreateListDto {
-    @IsString()
-    @IsDefined()
-    @IsNotEmpty()
-    name: string;
+  @IsString()
+  @IsDefined()
+  @IsNotEmpty()
+  name: string;
 
-    @IsDefined()
-    @IsUUID()
-    userId: string;
+  @IsDefined()
+  @IsUUID()
+  userId: string;
 }
