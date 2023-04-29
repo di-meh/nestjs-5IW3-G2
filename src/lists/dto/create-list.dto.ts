@@ -5,8 +5,5 @@ export class CreateListDto {
   @IsDefined()
   @IsNotEmpty()
   name: string;
-
-  @IsDefined()
-  @IsUUID()
-  userId: string;
 }
+

@@ -1,44 +1,52 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
-import { ListsService } from './lists.service';
-import { CreateListDto } from './dto/create-list.dto';
-import { UpdateListDto } from './dto/update-list.dto';
-import {ApiTags} from "@nestjs/swagger";
+import {Body, Controller, Delete, Get, Param, Patch, Post, Request, UseGuards} from '@nestjs/common';
+import {ListsService} from './lists.service';
+import {CreateListDto} from './dto/create-list.dto';
+import {UpdateListDto} from './dto/update-list.dto';
+import {ApiBearerAuth, ApiTags} from "@nestjs/swagger";
+import {AuthGuard} from 'src/auth/auth.guard';
+import {ListsGuard} from "./lists.guard";
+import {RolesGuard} from "../roles/roles.guard";
+import {Roles} from "../roles/roles.decorator";
+import {Role} from "../roles/roles.enum";
 
 @ApiTags('lists')
 @Controller('lists')
 export class ListsController {
   constructor(private readonly listsService: ListsService) {}
 
+
   @Post()
-  create(@Body() createListDto: CreateListDto) {
-    return this.listsService.create(createListDto);
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
+  create(@Request() request, @Body() createListDto: CreateListDto) {
+    return this.listsService.create(request.user.sub,createListDto);
   }
 
   @Get()
-  findAll() {
-    return this.listsService.findAll();
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
+  findAll(@Request() request) {
+    return this.listsService.findAll(request.user.sub);
   }
 
   @Get(':id')
+  @UseGuards(AuthGuard, ListsGuard)
+  @ApiBearerAuth()
   findOne(@Param('id') id: string) {
-    return this.listsService.findOne(+id);
+    return this.listsService.findOne(id);
   }
 
   @Patch(':id')
+  @UseGuards(AuthGuard, ListsGuard)
+  @ApiBearerAuth()
   update(@Param('id') id: string, @Body() updateListDto: UpdateListDto) {
-    return this.listsService.update(+id, updateListDto);
+    return this.listsService.update(id, updateListDto);
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard, ListsGuard)
+  @ApiBearerAuth()
   remove(@Param('id') id: string) {
-    return this.listsService.remove(+id);
+    return this.listsService.remove(id);
   }
 }
