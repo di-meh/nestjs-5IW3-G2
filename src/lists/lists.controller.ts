@@ -6,20 +6,26 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
+  Request
 } from '@nestjs/common';
 import { ListsService } from './lists.service';
 import { CreateListDto } from './dto/create-list.dto';
 import { UpdateListDto } from './dto/update-list.dto';
-import {ApiTags} from "@nestjs/swagger";
+import {ApiBearerAuth, ApiTags} from "@nestjs/swagger";
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @ApiTags('lists')
 @Controller('lists')
 export class ListsController {
   constructor(private readonly listsService: ListsService) {}
 
+
   @Post()
-  create(@Body() createListDto: CreateListDto) {
-    return this.listsService.create(createListDto);
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
+  create(@Request() request, @Body() createListDto: CreateListDto) {
+    return this.listsService.create(request.user.id,createListDto);
   }
 
   @Get()
