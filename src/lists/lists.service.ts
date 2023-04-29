@@ -6,28 +6,47 @@ import { PrismaService } from '../prisma/prisma.service';
 @Injectable()
 export class ListsService {
   constructor(private prisma: PrismaService) {}
-  create(id,createListDto: CreateListDto) {
+  create(id:string ,createListDto: CreateListDto) {
     return this.prisma.list.create({
       data: {
         ...createListDto,
-        userId:  id ,
-      },
+        user: {
+          connect: {
+            id
+          }
+        }
+      }
     });
   }
 
-  findAll() {
-    return this.prisma.list.findMany();
+  findAll(id:string) {
+    return this.prisma.list.findMany({where: { userId: id }});
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} list`;
+  findOne(id: string) {
+    return this.prisma.list.findUnique({
+      where: {
+        id
+      }
+    });
   }
 
-  update(id: number, updateListDto: UpdateListDto) {
-    return `This action updates a #${id} list`;
+  update(id: string, updateListDto: UpdateListDto) {
+    return this.prisma.list.update({
+      where: {
+        id
+      },
+      data: updateListDto
+    });
+
+
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} list`;
+  remove(id: string) {
+    return this.prisma.list.delete({
+      where: {
+        id
+      }
+    });
   }
 }

@@ -25,26 +25,34 @@ export class ListsController {
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
   create(@Request() request, @Body() createListDto: CreateListDto) {
-    return this.listsService.create(request.user.id,createListDto);
+    return this.listsService.create(request.user.sub,createListDto);
   }
 
   @Get()
-  findAll() {
-    return this.listsService.findAll();
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
+  findAll(@Request() request) {
+    return this.listsService.findAll(request.user.sub);
   }
 
   @Get(':id')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   findOne(@Param('id') id: string) {
-    return this.listsService.findOne(+id);
+    return this.listsService.findOne(id);
   }
 
   @Patch(':id')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   update(@Param('id') id: string, @Body() updateListDto: UpdateListDto) {
-    return this.listsService.update(+id, updateListDto);
+    return this.listsService.update(id, updateListDto);
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   remove(@Param('id') id: string) {
-    return this.listsService.remove(+id);
+    return this.listsService.remove(id);
   }
 }
