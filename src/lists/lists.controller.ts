@@ -1,20 +1,13 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  UseGuards,
-  Request
-} from '@nestjs/common';
-import { ListsService } from './lists.service';
-import { CreateListDto } from './dto/create-list.dto';
-import { UpdateListDto } from './dto/update-list.dto';
+import {Body, Controller, Delete, Get, Param, Patch, Post, Request, UseGuards} from '@nestjs/common';
+import {ListsService} from './lists.service';
+import {CreateListDto} from './dto/create-list.dto';
+import {UpdateListDto} from './dto/update-list.dto';
 import {ApiBearerAuth, ApiTags} from "@nestjs/swagger";
-import { AuthGuard } from 'src/auth/auth.guard';
+import {AuthGuard} from 'src/auth/auth.guard';
 import {ListsGuard} from "./lists.guard";
+import {RolesGuard} from "../roles/roles.guard";
+import {Roles} from "../roles/roles.decorator";
+import {Role} from "../roles/roles.enum";
 
 @ApiTags('lists')
 @Controller('lists')
