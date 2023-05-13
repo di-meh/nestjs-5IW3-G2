@@ -9,7 +9,7 @@ export class ListsGuard implements CanActivate {
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
-    const listId = context.switchToHttp().getRequest().params.id;
+    const listId = context.switchToHttp().getRequest().params.listId;
     const userId = context.switchToHttp().getRequest().user.sub;
 
     if (context.switchToHttp().getRequest().user.roles.includes(Role.ADMIN)) {

@@ -29,24 +29,24 @@ export class ListsController {
     return this.listsService.findAll(request.user.sub);
   }
 
-  @Get(':id')
+  @Get(':listId')
   @UseGuards(AuthGuard, ListsGuard)
   @ApiBearerAuth()
-  findOne(@Param('id') id: string) {
+  findOne(@Param('listId') id: string) {
     return this.listsService.findOne(id);
   }
 
-  @Patch(':id')
+  @Patch(':listId')
   @UseGuards(AuthGuard, ListsGuard)
   @ApiBearerAuth()
-  update(@Param('id') id: string, @Body() updateListDto: UpdateListDto) {
+  update(@Param('listId') id: string, @Body() updateListDto: UpdateListDto) {
     return this.listsService.update(id, updateListDto);
   }
 
-  @Delete(':id')
+  @Delete(':listId')
   @UseGuards(AuthGuard, ListsGuard)
   @ApiBearerAuth()
-  remove(@Param('id') id: string) {
+  remove(@Param('listId') id: string) {
     return this.listsService.remove(id);
   }
 }
