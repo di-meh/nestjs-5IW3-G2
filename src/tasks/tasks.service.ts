@@ -20,13 +20,22 @@ export class TasksService {
     });
   }
 
-  findAll() {
-    return `This action returns all tasks`;
+  findAll(listId: string) {
+    return this.prisma.task.findMany({where: { listId: listId }});
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} task`;
+  async findOne(listId: string, id: string) {
+    const task = await this.prisma.task.findFirst({
+      where: {
+        id: id,
+        listId: listId,
+      }
+    });
+    
+    return task;
   }
+  
+  
 
   update(id: number, updateTaskDto: UpdateTaskDto) {
     return `This action updates a #${id} task`;

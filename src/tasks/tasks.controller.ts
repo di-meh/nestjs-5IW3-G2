@@ -32,15 +32,16 @@ export class TasksController {
   @Get()
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
-  findAll() {
-    return this.tasksService.findAll();
+  @ApiParam({name: 'listId'})
+  findAll(@Param('listId', ParseUUIDPipe) listId: string ) {
+    return this.tasksService.findAll(listId);
   }
 
   @Get(':id')
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
-  findOne(@Param('id') id: string) {
-    return this.tasksService.findOne(+id);
+  findOne(@Param('listId', ParseUUIDPipe) listId: string, @Param('id', ParseUUIDPipe) id: string) {
+    return this.tasksService.findOne(listId ,id);
   }
 
   @Patch(':id')
