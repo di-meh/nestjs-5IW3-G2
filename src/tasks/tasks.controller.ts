@@ -52,9 +52,9 @@ export class TasksController {
   }
 
   @Delete(':id')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, ListsGuard)
   @ApiBearerAuth()
-  remove(@Param('id') id: string) {
-    return this.tasksService.remove(+id);
+  remove(@Param('listId', ParseUUIDPipe) listId: string, @Param('id',ParseUUIDPipe) id: string) {
+    return this.tasksService.remove( listId, id);
   }
 }

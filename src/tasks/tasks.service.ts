@@ -31,7 +31,7 @@ export class TasksService {
         listId: listId,
       }
     });
-    
+
     return task;
   }
   
@@ -41,7 +41,13 @@ export class TasksService {
     return `This action updates a #${id} task`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} task`;
+  async remove(listId: string, taskId: string) {
+    await this.prisma.task.deleteMany({
+      where: {
+        id: taskId,
+        listId: listId
+      }
+    });
   }
+  
 }
