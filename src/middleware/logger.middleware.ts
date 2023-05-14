@@ -5,19 +5,23 @@ const logger = winston.createLogger({
   level: 'info',
   format: winston.format.combine(
     winston.format.timestamp(),
-    winston.format.json()
+    winston.format.json(),
   ),
   defaultMeta: { service: 'my-nestjs-app' },
   transports: [
     new winston.transports.File({ filename: 'logs/error.log', level: 'error' }),
-    new winston.transports.File({ filename: 'logs/app.log' })
-  ]
+    new winston.transports.File({ filename: 'logs/app.log' }),
+  ],
 });
 
-export function loggerMiddleware(req: Request, res: Response, next: NextFunction) {
+export function loggerMiddleware(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
   const requestMessage = `Request: ${req.method} ${req.originalUrl}`;
   logger.info(requestMessage);
-  
+
   // Add an error event listener to the response object
   res.on('finish', () => {
     const responseMessage = `Response: ${res.statusCode}`;
@@ -28,8 +32,7 @@ export function loggerMiddleware(req: Request, res: Response, next: NextFunction
     }
   });
 
-
   next();
-};
+}
 
 export default loggerMiddleware;

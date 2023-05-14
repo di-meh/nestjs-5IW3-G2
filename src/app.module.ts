@@ -23,6 +23,10 @@ import { APP_GUARD } from '@nestjs/core';
     }),
   ],
   controllers: [],
-  providers: [{provide: APP_GUARD,useClass: ThrottlerGuard},AuthService, PrismaService],
+  providers: [
+    { provide: APP_GUARD, useClass: ThrottlerGuard },
+    AuthService,
+    PrismaService,
+  ],
 })
 export class AppModule {}

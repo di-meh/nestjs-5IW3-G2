@@ -1,6 +1,4 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateListDto } from './create-list.dto';
-import { IsDefined, IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import { IsDefined, IsNotEmpty, IsString } from 'class-validator';
 
 export class UpdateListDto {
   @IsString()
