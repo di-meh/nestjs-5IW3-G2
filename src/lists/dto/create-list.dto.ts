@@ -6,4 +6,3 @@ export class CreateListDto {
   @IsNotEmpty()
   name: string;
 }
-

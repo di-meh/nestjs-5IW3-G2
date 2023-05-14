@@ -6,39 +6,60 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
-import {ApiTags} from "@nestjs/swagger";
+import { ApiBearerAuth, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from 'src/auth/auth.guard';
+import { ListsGuard } from 'src/lists/lists.guard';
 
 @ApiTags('tasks')
-@Controller('tasks')
+@Controller('lists/:listId/tasks')
+@UseGuards(AuthGuard, ListsGuard)
+@ApiBearerAuth()
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
   @Post()
-  create(@Body() createTaskDto: CreateTaskDto) {
-    return this.tasksService.create(createTaskDto);
+  @ApiParam({ name: 'listId' })
+  create(
+    @Param('listId', ParseUUIDPipe) listId: string,
+    @Body() createTaskDto: CreateTaskDto,
+  ) {
+    return this.tasksService.create(listId, createTaskDto);
   }
 
   @Get()
-  findAll() {
-    return this.tasksService.findAll();
+  @ApiParam({ name: 'listId' })
+  findAll(@Param('listId', ParseUUIDPipe) listId: string) {
+    return this.tasksService.findAll(listId);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.tasksService.findOne(+id);
+  findOne(
+    @Param('listId', ParseUUIDPipe) listId: string,
+    @Param('id', ParseUUIDPipe) id: string,
+  ) {
+    return this.tasksService.findOne(listId, id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
-    return this.tasksService.update(+id, updateTaskDto);
+  update(
+    @Param('listId', ParseUUIDPipe) listId: string,
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateTaskDto: UpdateTaskDto,
+  ) {
+    return this.tasksService.update(listId, id, updateTaskDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.tasksService.remove(+id);
+  remove(
+    @Param('listId', ParseUUIDPipe) listId: string,
+    @Param('id', ParseUUIDPipe) id: string,
+  ) {
+    return this.tasksService.remove(listId, id);
   }
 }

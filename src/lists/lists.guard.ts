@@ -1,7 +1,7 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import {PrismaService} from "../prisma/prisma.service";
-import {Role} from "../roles/roles.enum";
+import { PrismaService } from '../prisma/prisma.service';
+import { Role } from '../roles/roles.enum';
 
 @Injectable()
 export class ListsGuard implements CanActivate {
@@ -9,23 +9,22 @@ export class ListsGuard implements CanActivate {
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
-    const listId = context.switchToHttp().getRequest().params.id;
+    const listId = context.switchToHttp().getRequest().params.listId;
     const userId = context.switchToHttp().getRequest().user.sub;
 
     if (context.switchToHttp().getRequest().user.roles.includes(Role.ADMIN)) {
-        return true;
+      return true;
     }
 
     const userHasAccess = this.prisma.list.findFirst({
-        where: {
-            id: listId,
-            userId: userId
-        }
+      where: {
+        id: listId,
+        userId: userId,
+      },
     });
 
     return userHasAccess.then((result) => {
-        return !!result;
+      return !!result;
     });
-
   }
 }
