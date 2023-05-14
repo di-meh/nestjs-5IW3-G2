@@ -6,6 +6,7 @@ import { AuthService } from './auth/auth.service';
 import { PrismaService } from './prisma/prisma.service';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
+
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 

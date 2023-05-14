@@ -4,7 +4,7 @@ import { ValidationPipe } from '@nestjs/common';
 import * as compression from 'compression';
 import {DocumentBuilder, SwaggerModule} from "@nestjs/swagger";
 import helmet from 'helmet';
-
+import { loggerMiddleware } from './middleware/logger.middleware';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
@@ -20,6 +20,7 @@ async function bootstrap() {
   SwaggerModule.setup('', app, document);
   app.use(compression());
   app.use(helmet());
+  app.use(loggerMiddleware);
   await app.listen(3000);
 }
 bootstrap();
