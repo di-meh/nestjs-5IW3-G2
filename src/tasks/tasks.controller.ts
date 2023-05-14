@@ -47,8 +47,8 @@ export class TasksController {
   @Patch(':id')
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
-  update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
-    return this.tasksService.update(+id, updateTaskDto);
+  update(@Param('listId', ParseUUIDPipe) listId: string, @Param('id',ParseUUIDPipe) id: string, @Body() updateTaskDto: UpdateTaskDto) {
+    return this.tasksService.update(listId, id, updateTaskDto);
   }
 
   @Delete(':id')

@@ -35,11 +35,18 @@ export class TasksService {
     return task;
   }
   
-  
+  async update(listId :string, id: string, updateTaskDto: UpdateTaskDto) {
+    const task = await this.prisma.task.findFirst(id);
 
-  update(id: number, updateTaskDto: UpdateTaskDto) {
-    return `This action updates a #${id} task`;
+    const updatedTask = await this.prisma.task.update(id, {
+      ...updateTaskDto,
+      updatedAt: new Date(),
+    });
+
+    return this.prisma.task.findFirst(id);
   }
+  
+  
 
   async remove(listId: string, taskId: string) {
     await this.prisma.task.deleteMany({
