@@ -20,7 +20,15 @@ docker compose up -d
 
 ### Prisma
 
+#### Migrate
+
 ```bash
-docker compose exec nest npx prisma migrate dev --name init
+docker compose exec nest npx prisma migrate dev
+```
+
+#### Seed the database
+
+```bash
+docker compose exec nest npx prisma db seed
 ```
 
